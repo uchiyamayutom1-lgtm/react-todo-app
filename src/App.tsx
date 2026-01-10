@@ -2,8 +2,10 @@
 import { useState } from 'react';
 
 export const App = () => {
+  
   // 初期値: 空文字列 ''
   const [text, setText] = useState('');
+  const [todos,setTodos] = useState<Todo[]>([]);
 
   return (
     <div>
