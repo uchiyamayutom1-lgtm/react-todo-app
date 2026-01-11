@@ -3,6 +3,7 @@ import { useState } from 'react';
 
 type Todo = {
   value: string;
+  readonly id: number;
 };
 
 export const App = () => {
@@ -25,11 +26,8 @@ export const App = () => {
     const newTodo: Todo = {
       // text ステートの値を value プロパティへ
       value: text,
+      id: new Date().getTime(),
     };
-
-     
-  
-
     /**
      * 更新前の todos ステートを元に
      * スプレッド構文で展開した要素へ
@@ -38,6 +36,26 @@ export const App = () => {
     setTodos((todos) => [newTodo, ...todos]);
     // フォームへの入力をクリアする
     setText('');
+  };
+
+  /*todo編集時の関数*/ 
+    const handleEdit = (id: number, value: string) => {
+    setTodos((todos) => {
+      /**
+       * 引数として渡された todo の id が一致する
+       * 更新前の todos ステート内の todo の
+       * value プロパティを引数 value (= e.target.value) に書き換える
+       */
+      const newTodos = todos.map((todo) => {
+        if (todo.id === id) {
+          todo.value = value;
+        }
+        return todo;
+      });
+
+      // todos ステートを更新
+      return newTodos;
+    });
   };
 
   
@@ -60,6 +78,20 @@ export const App = () => {
         />
         <input type="submit" value='追加'　onSubmit={handleSubmit}  />  {/* ← 省略 */}
       </form>
+
+      <ul>
+        {todos.map((todo) => {
+          return(
+          <li key={todo.id}>
+            <input 
+            type="text" 
+            value={todo.value}
+            onChange={(e) => handleEdit(todo.id, e.target.value)}
+            />
+            </li>
+            );
+        })}
+      </ul>
     </div>
   );
 };
