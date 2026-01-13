@@ -4,6 +4,7 @@ import { useState } from 'react';
 type Todo = {
   value: string;
   readonly id: number;
+  checked:boolean;
 };
 
 export const App = () => {
@@ -27,6 +28,7 @@ export const App = () => {
       // text ステートの値を value プロパティへ
       value: text,
       id: new Date().getTime(),
+       checked: false,
     };
     /**
      * 更新前の todos ステートを元に
@@ -48,10 +50,17 @@ export const App = () => {
        */
       const newTodos = todos.map((todo) => {
         if (todo.id === id) {
-          todo.value = value;
+          return{...todo, value};
         }
-        return todo;
+         return todo;
       });
+
+      // todos ステート配列をチェック（あとでコメントアウト）
+      console.log('=== Original todos ===');
+      todos.map((todo) => {
+        console.log(`id: ${todo.id}, value: ${todo.value}`);
+      });
+      // ここまで
 
       // todos ステートを更新
       return newTodos;
@@ -83,6 +92,11 @@ export const App = () => {
         {todos.map((todo) => {
           return(
           <li key={todo.id}>
+            <input
+              type="checkbox"
+              checked={todo.checked}
+              onChange={() => console.log('checked!')}
+              />
             <input 
             type="text" 
             value={todo.value}
