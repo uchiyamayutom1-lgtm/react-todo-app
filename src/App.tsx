@@ -40,6 +40,19 @@ export const App = () => {
     setText('');
   };
 
+    const handleCheck = (id: number, checked: boolean) => {
+    setTodos((todos) => {
+      const newTodos = todos.map((todo) => {
+        if (todo.id === id) {
+          return { ...todo, checked };
+        }
+        return todo;
+      });
+
+      return newTodos;
+    });
+  };
+
   /*todo編集時の関数*/ 
     const handleEdit = (id: number, value: string) => {
     setTodos((todos) => {
@@ -95,10 +108,12 @@ export const App = () => {
             <input
               type="checkbox"
               checked={todo.checked}
-              onChange={() => console.log('checked!')}
+              //呼び出し側でchecked反転
+              onChange={() => handleCheck(todo.id, !todo.checked)}
               />
             <input 
             type="text" 
+            disabled={todo.checked}
             value={todo.value}
             onChange={(e) => handleEdit(todo.id, e.target.value)}
             />
