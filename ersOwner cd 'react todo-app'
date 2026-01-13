@@ -1,0 +1,41 @@
+[33mcommit e8a6552ccbccf86a04c6344f04a9b98169d2fe94[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m
+Author: Uchiyama Yuto <uchiyama.yuto.m1@elms.hokudai.ac.jp>
+Date:   Tue Jan 13 11:07:42 2026 +0900
+
+    チェックボックス追加
+
+[33mcommit 8b820013e7af5eba4ea982aae473b8f78994a06f[m
+Author: Uchiyama Yuto <uchiyama.yuto.m1@elms.hokudai.ac.jp>
+Date:   Tue Jan 13 09:43:35 2026 +0900
+
+    スプレッド構文でステートを作成
+
+[33mcommit 6933082fb46bd805ea05bba7527d4eae5998a643[m
+Author: Uchiyama Yuto <uchiyama.yuto.m1@elms.hokudai.ac.jp>
+Date:   Sun Jan 11 10:07:49 2026 +0900
+
+    todoを編集可能に
+
+[33mcommit c929e43d0aa9e625c12cd73edc29f84242f2d2c5[m
+Author: Uchiyama Yuto <uchiyama.yuto.m1@elms.hokudai.ac.jp>
+Date:   Sat Jan 10 18:14:18 2026 +0900
+
+    todosの追加
+
+[33mcommit 932faf006ebf4e8ab44a1aba608eea73ffd5faa1[m
+Author: Uchiyama Yuto <uchiyama.yuto.m1@elms.hokudai.ac.jp>
+Date:   Sat Jan 10 12:37:40 2026 +0900
+
+    変更
+
+[33mcommit 32b39e480624ded37a332ea12236a414a9eaaaaa[m
+Author: Uchiyama Yuto <uchiyama.yuto.m1@elms.hokudai.ac.jp>
+Date:   Sat Jan 10 12:04:26 2026 +0900
+
+    usestateを追加
+
+[33mcommit ab289d3b5b3f0cefb9541ebbdfe326c9682569a1[m
+Author: Uchiyama Yuto <uchiyama.yuto.m1@elms.hokudai.ac.jp>
+Date:   Fri Jan 9 10:48:34 2026 +0900
+
+    first commit

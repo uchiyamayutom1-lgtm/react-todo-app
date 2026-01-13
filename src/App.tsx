@@ -1,10 +1,12 @@
 // React から useState フックをインポート
 import { useState } from 'react';
 
+//型指定関数を定義
 type Todo = {
   value: string;
   readonly id: number;
   checked:boolean;
+  removed: boolean;
 };
 
 export const App = () => {
@@ -17,7 +19,7 @@ export const App = () => {
     setText(e.target.value);
    };
 
-  // todos ステートを更新する関数
+  // todos ステートを更新する関数定義
   const handleSubmit = () => {
     // 何も入力されていなかったらリターン
     if (!text) return;
@@ -28,7 +30,8 @@ export const App = () => {
       // text ステートの値を value プロパティへ
       value: text,
       id: new Date().getTime(),
-       checked: false,
+      checked: false,
+      removed: false,
     };
     /**
      * 更新前の todos ステートを元に
@@ -40,6 +43,7 @@ export const App = () => {
     setText('');
   };
 
+    //チェックボックスを更新する関数定義
     const handleCheck = (id: number, checked: boolean) => {
     setTodos((todos) => {
       const newTodos = todos.map((todo) => {
@@ -51,7 +55,22 @@ export const App = () => {
 
       return newTodos;
     });
+  }
+    //removeを更新する関数を定義
+    const handleRemove = (id: number, removed: boolean) => {
+    setTodos((todos) => {
+      const newTodos = todos.map((todo) => {
+        if (todo.id === id) {
+          return { ...todo, removed };
+        }
+        return todo;
+      });
+
+      return newTodos;
+    });
   };
+  
+  
 
   /*todo編集時の関数*/ 
     const handleEdit = (id: number, value: string) => {
@@ -117,6 +136,9 @@ export const App = () => {
             value={todo.value}
             onChange={(e) => handleEdit(todo.id, e.target.value)}
             />
+            <button  onClick={() => console.log('removed!')}>
+              {todo.removed ? '復元':'削除'}
+            </button>
             </li>
             );
         })}
