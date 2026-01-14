@@ -8,12 +8,18 @@ type Todo = {
   checked:boolean;
   removed: boolean;
 };
+type Filter = 'all' | 'checked' | 'unchecked' | 'removed';
 
 export const App = () => {
   
   // 初期値: 空文字列 ''
   const [text, setText] = useState('');
   const [todos,setTodos] = useState<Todo[]>([]);
+  const[filter, setFilter] = useState<Filter>('all');
+
+  const handleFilter = (filter:Filter) => {
+    setFilter(filter);
+  }
 
    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setText(e.target.value);
@@ -42,6 +48,25 @@ export const App = () => {
     // フォームへの入力をクリアする
     setText('');
   };
+    const filteredTodos = todos.filter((todo) => {
+    // filter ステートの値に応じて異なる内容の配列を返す
+    switch (filter) {
+      case 'all':
+        // 削除されていないもの
+        return !todo.removed;
+      case 'checked':
+        // 完了済 **かつ** 削除されていないもの
+        return todo.checked && !todo.removed;
+      case 'unchecked':
+        // 未完了 **かつ** 削除されていないもの
+        return !todo.checked && !todo.removed;
+      case 'removed':
+        // 削除済みのもの
+        return todo.removed;
+      default:
+        return todo;
+    }
+  });
 
     //チェックボックスを更新する関数定義
     const handleCheck = (id: number, checked: boolean) => {
@@ -104,6 +129,22 @@ export const App = () => {
   return (
     
     <div>
+      <select defaultValue="all" onChange={(e) => handleFilter(e.target.value as Filter)}>
+        <option value="all">すべてのタスク</option>
+        <option value="checked">完了したタスク</option>
+        <option value="unchecked">現在のタスク</option>
+        <option value="removed">ごみ箱</option>
+      </select>
+
+{/* --- 条件分岐のエリア --- */}
+      {filter === 'removed' ? (
+      <button onClick={() => console.log('remove all')}>
+        ごみ箱を空にする
+      </button>
+    ) : (
+      // フィルターが `checked` でなければ Todo 入力フォームを表示
+      filter !== 'checked' && (
+    
       <form
        onSubmit={(e) =>{ 
         e.preventDefault();
@@ -117,26 +158,33 @@ export const App = () => {
           // onChange イベント（＝入力テキストの変化）を text ステートに反映する
           onChange={(e) => handleChange(e)}
         />
-        <input type="submit" value='追加'　onSubmit={handleSubmit}  />  {/* ← 省略 */}
+        <input
+         type="submit"
+          value='追加'
+          onSubmit={handleSubmit}  
+          />  
       </form>
-
+      )
+    )}
+    {/* --- 条件分岐のエリア終了 --- */}
       <ul>
-        {todos.map((todo) => {
+        {filteredTodos.map((todo) => {
           return(
           <li key={todo.id}>
             <input
               type="checkbox"
+              disabled={todo.removed}
               checked={todo.checked}
               //呼び出し側でchecked反転
               onChange={() => handleCheck(todo.id, !todo.checked)}
               />
             <input 
             type="text" 
-            disabled={todo.checked}
+            disabled={todo.checked||todo.removed}
             value={todo.value}
             onChange={(e) => handleEdit(todo.id, e.target.value)}
             />
-            <button  onClick={() => console.log('removed!')}>
+            <button  onClick={() => handleRemove(todo.id, !todo.removed)}>
               {todo.removed ? '復元':'削除'}
             </button>
             </li>
