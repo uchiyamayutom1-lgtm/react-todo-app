@@ -5,6 +5,9 @@ import localforage from 'localforage';
 // useEffect フックをインポート
 import { useEffect, useState  } from 'react';
 
+import { isTodos } from './lib/isTodos';
+
+
 //型指定関数を定義
 
 
@@ -103,7 +106,7 @@ export const App = () => {
   useEffect(() => {
     localforage
       .getItem('todo-shelve')
-      .then((values) => setTodos(values as Todo[]));
+      .then((values) => isTodos(values) && setTodos(values as Todo[]));
   }, []);
 
   /**
