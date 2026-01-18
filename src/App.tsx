@@ -69,61 +69,34 @@ export const App = () => {
   });
 
     //チェックボックスを更新する関数定義
-    const handleCheck = (id: number, checked: boolean) => {
-    setTodos((todos) => {
-      const newTodos = todos.map((todo) => {
-        if (todo.id === id) {
-          return { ...todo, checked };
-        }
-        return todo;
-      });
-
-      return newTodos;
-    });
-  }
-    //removeを更新する関数を定義
-    const handleRemove = (id: number, removed: boolean) => {
-    setTodos((todos) => {
-      const newTodos = todos.map((todo) => {
-        if (todo.id === id) {
-          return { ...todo, removed };
-        }
-        return todo;
-      });
-
-      return newTodos;
-    });
-  };
+    
+   
+  const handleEmpty = () => {
+    setTodos((todos) => todos.filter((todo) => !todo.removed));
+    };
   
   
 
   /*todo編集時の関数*/ 
-    const handleEdit = (id: number, value: string) => {
+    const handleTodo = <K extends keyof Todo, V extends Todo[K]>(
+    id: number,
+    key: K,
+    value: V
+  ) => {
     setTodos((todos) => {
-      /**
-       * 引数として渡された todo の id が一致する
-       * 更新前の todos ステート内の todo の
-       * value プロパティを引数 value (= e.target.value) に書き換える
-       */
       const newTodos = todos.map((todo) => {
         if (todo.id === id) {
-          return{...todo, value};
+          return { ...todo, [key]: value };
+        } else {
+          return todo;
         }
-         return todo;
       });
 
-      // todos ステート配列をチェック（あとでコメントアウト）
-      console.log('=== Original todos ===');
-      todos.map((todo) => {
-        console.log(`id: ${todo.id}, value: ${todo.value}`);
-      });
-      // ここまで
-
-      // todos ステートを更新
       return newTodos;
     });
   };
-
+  
+   
   
 
   return (
@@ -138,8 +111,12 @@ export const App = () => {
 
 {/* --- 条件分岐のエリア --- */}
       {filter === 'removed' ? (
-      <button onClick={() => console.log('remove all')}>
+      <button 
+      onClick={handleEmpty}
+      disabled={todos.filter((todo) => todo.removed).length === 0}
+      >
         ごみ箱を空にする
+
       </button>
     ) : (
       // フィルターが `checked` でなければ Todo 入力フォームを表示
@@ -176,15 +153,15 @@ export const App = () => {
               disabled={todo.removed}
               checked={todo.checked}
               //呼び出し側でchecked反転
-              onChange={() => handleCheck(todo.id, !todo.checked)}
+              onChange={() => handleTodo(todo.id, 'checked',!todo.checked)}
               />
             <input 
             type="text" 
             disabled={todo.checked||todo.removed}
             value={todo.value}
-            onChange={(e) => handleEdit(todo.id, e.target.value)}
+            onChange={(e) => handleTodo(todo.id,'value', e.target.value)}
             />
-            <button  onClick={() => handleRemove(todo.id, !todo.removed)}>
+            <button  onClick={() => handleTodo(todo.id,'removed', !todo.removed)}>
               {todo.removed ? '復元':'削除'}
             </button>
             </li>
