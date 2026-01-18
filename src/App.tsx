@@ -1,14 +1,12 @@
 // React から useState フックをインポート
-import { useState } from 'react';
+// localforage をインポート
+import localforage from 'localforage';
+
+// useEffect フックをインポート
+import { useEffect, useState  } from 'react';
 
 //型指定関数を定義
-type Todo = {
-  value: string;
-  readonly id: number;
-  checked:boolean;
-  removed: boolean;
-};
-type Filter = 'all' | 'checked' | 'unchecked' | 'removed';
+
 
 export const App = () => {
   
@@ -97,7 +95,23 @@ export const App = () => {
   };
   
    
-  
+    /*localに保存
+     
+   * キー名 'todo-20200101' のデータを取得
+   * 第 2 引数の配列が空なのでコンポーネントのマウント時のみに実行される
+  */
+  useEffect(() => {
+    localforage
+      .getItem('todo-shelve')
+      .then((values) => setTodos(values as Todo[]));
+  }, []);
+
+  /**
+   * todos ステートが更新されたら、その値を保存
+  */
+  useEffect(() => {
+    localforage.setItem('todo-shelve', todos);
+  }, [todos]);
 
   return (
     
